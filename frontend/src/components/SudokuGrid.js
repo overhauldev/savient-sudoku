@@ -1,6 +1,4 @@
 import React from 'react';
-import './SudokuGrid.css';
-
 const SudokuGrid = ({ gridSize, puzzle, setPuzzle }) => {
   const handleChange = (e, row, col) => {
     const value = parseInt(e.target.value) || '';

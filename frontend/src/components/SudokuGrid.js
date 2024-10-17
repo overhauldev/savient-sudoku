@@ -1,12 +1,6 @@
-import React from 'react';
-const SudokuGrid = ({ gridSize, puzzle, setPuzzle }) => {
-  const handleChange = (e, row, col) => {
-    const value = parseInt(e.target.value) || '';
-    const newPuzzle = [...puzzle];
-    newPuzzle[row][col] = value;
-    setPuzzle(newPuzzle);
-  };
+import React from "react";
 
+const SudokuGrid = ({ puzzle, onCellClick }) => {
   return (
     <div className="sudoku-grid">
       {puzzle.map((row, rowIndex) => (
@@ -14,12 +8,11 @@ const SudokuGrid = ({ gridSize, puzzle, setPuzzle }) => {
           {row.map((cell, colIndex) => (
             <input
               key={colIndex}
-              type="number"
+              type="text"
               className="sudoku-cell"
-              value={cell || ''}
-              onChange={(e) => handleChange(e, rowIndex, colIndex)}
-              min="1"
-              max={gridSize}
+              value={cell}
+              readOnly
+              onClick={() => onCellClick(rowIndex, colIndex)}
             />
           ))}
         </div>

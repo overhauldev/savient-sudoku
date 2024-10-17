@@ -1,0 +1,37 @@
+.sudoku-page {
+    text-align: center;
+    padding: 20px;
+}
+
+.sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 2px;
+    max-width: 540;
+    margin: 0 auto;
+}
+
+.sudoku-row {
+    display: contents;
+}
+
+.sudoku-cell {
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    font-size: 1.2em;
+    border: 1px solid #ccc;
+}
+
+.sudoku-cell:focus {
+    outline: none;
+    border-color: #61dafb;
+}
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    /* Adjust the gap as needed */
+    margin-top: 20px;
+    /* Optional: Add some space above the buttons */
+}

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "../App.css";
 import "../components/SudokuStyle.css";
 import SudokuGrid from "../components/SudokuGrid";
 import ButtonContainer from "../components/ButtonContainer";
@@ -8,6 +7,7 @@ import sudoku from "sudoku";
 const TestSudokuGrid = () => {
   const [puzzleGrid, setPuzzleGrid] = useState([]);
   const [solutionGrid, setSolutionGrid] = useState([]);
+  const [originalPuzzleGrid, setOriginalPuzzleGrid] = useState([]);
 
   useEffect(() => {
     // Generate the puzzle and transform it into a 2D array
@@ -34,6 +34,7 @@ const TestSudokuGrid = () => {
 
     setPuzzleGrid(transformedPuzzle);
     setSolutionGrid(transformedSolution);
+    setOriginalPuzzleGrid(JSON.parse(JSON.stringify(transformedPuzzle))); // Store a deep copy of the original puzzle state
   }, []);
 
   const handleCellChange = (row, col, value) => {
@@ -60,19 +61,23 @@ const TestSudokuGrid = () => {
     setPuzzleGrid(newPuzzleGrid);
   };
 
+  const resetPuzzle = () => {
+    setPuzzleGrid(JSON.parse(JSON.stringify(originalPuzzleGrid))); // Reset to the original puzzle state
+  };
+
   if (!solutionGrid.length) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="App-header">
-      <h1>Test Sudoku Grid</h1>
+      <h1>Savient Sudoku</h1>
       <div className="center-container">
         <div className="sudoku-container">
           <SudokuGrid puzzle={puzzleGrid} onCellChange={handleCellChange} />
         </div>
       </div>
-      <ButtonContainer />
+      <ButtonContainer onReset={resetPuzzle} />
     </div>
   );
 };

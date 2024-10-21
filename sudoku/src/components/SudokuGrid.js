@@ -11,6 +11,7 @@ const SudokuGrid = ({ puzzle, onCellChange }) => {
               key={colIndex}
               value={cell}
               onChange={(e) => onCellChange(rowIndex, colIndex, e.target.value)}
+              readOnly={cell !== ""}
             />
           ))}
         </div>

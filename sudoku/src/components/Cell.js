@@ -1,6 +1,6 @@
 import React from "react";
 
-const Cell = ({ value, onChange }) => {
+const Cell = ({ value, onChange, readOnly }) => {
   return (
     <input
       type="text"
@@ -8,6 +8,7 @@ const Cell = ({ value, onChange }) => {
       value={value}
       onChange={onChange}
       maxLength="1"
+      readOnly={readOnly}
     />
   );
 };

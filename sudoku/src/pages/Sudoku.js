@@ -5,36 +5,51 @@ import SudokuGrid from "../components/SudokuGrid";
 import ButtonContainer from "../components/ButtonContainer";
 import sudoku from "sudoku";
 
-const puzzle = sudoku.makepuzzle("easy");
-const solution = sudoku.solvepuzzle(puzzle);
 const TestSudokuGrid = () => {
   const [puzzleGrid, setPuzzleGrid] = useState([]);
   const [solutionGrid, setSolutionGrid] = useState([]);
 
   useEffect(() => {
     // Generate the puzzle and transform it into a 2D array
+    const puzzle = sudoku.makepuzzle("easy");
+    const solution = sudoku.solvepuzzle(puzzle);
 
-    const transformTo2DArray = (puzzle) => {
+    const transformTo2DArray = (array) => {
       let grid = [];
       for (let i = 0; i < 9; i++) {
         grid.push(
-          puzzle
+          array
             .slice(i * 9, (i + 1) * 9)
             .map((cell) => (cell === null ? "" : cell + 1))
         );
       }
       return grid;
     };
-    console.log(transformTo2DArray(puzzle));
-    console.log(transformTo2DArray(solution));
-    setPuzzleGrid(transformTo2DArray(puzzle));
-    setSolutionGrid(solution);
+
+    const transformedPuzzle = transformTo2DArray(puzzle);
+    const transformedSolution = transformTo2DArray(solution);
+
+    console.log("Generated Puzzle:", transformedPuzzle);
+    console.log("Solution:", transformedSolution);
+
+    setPuzzleGrid(transformedPuzzle);
+    setSolutionGrid(transformedSolution);
   }, []);
 
   const handleCellChange = (row, col, value) => {
+    if (!solutionGrid.length) {
+      console.log("Solution grid is not yet initialized.");
+      return;
+    }
+
     const newPuzzleGrid = [...puzzleGrid];
     const intValue = parseInt(value) || 0;
-    if (intValue === solutionGrid[row * 9 + col]) {
+
+    console.log(
+      `Entered value: ${intValue}, Expected value: ${solutionGrid[row][col]}`
+    );
+
+    if (intValue === solutionGrid[row][col]) {
       newPuzzleGrid[row][col] = intValue;
       console.log("Correct");
     } else {
@@ -44,6 +59,10 @@ const TestSudokuGrid = () => {
     }
     setPuzzleGrid(newPuzzleGrid);
   };
+
+  if (!solutionGrid.length) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="App-header">

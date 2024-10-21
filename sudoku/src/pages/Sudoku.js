@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Ensure useNavigate is imported correctly
 import "../components/SudokuStyle.css";
 import SudokuGrid from "../components/SudokuGrid";
 import ButtonContainer from "../components/ButtonContainer";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
 import sudoku from "sudoku";
 
 const TestSudokuGrid = () => {
@@ -43,6 +43,13 @@ const TestSudokuGrid = () => {
     setOriginalPuzzleGrid(JSON.parse(JSON.stringify(transformedPuzzle))); // Store a deep copy of the original puzzle state
   }, []);
 
+  useEffect(() => {
+    if (mistakes >= maxMistakes) {
+      toast.error("Too many mistakes! The board will be reset."); // Display error notification
+      resetPuzzle();
+    }
+  }, [mistakes]);
+
   const handleCellChange = (row, col, value) => {
     if (!solutionGrid.length) {
       console.log("Solution grid is not yet initialized.");
@@ -63,22 +70,18 @@ const TestSudokuGrid = () => {
     } else {
       toast.error("Incorrect value entered!"); // Display error notification
       newPuzzleGrid[row][col] = ""; // Remove the incorrect value
-      setMistakes(mistakes + 1); // Increment the mistakes counter
+      setMistakes((prevMistakes) => prevMistakes + 1);
       console.log("Incorrect");
     }
 
-    if (mistakes + 1 >= maxMistakes) {
-      toast.error("Too many mistakes! The board will be reset."); // Display error notification
-      resetPuzzle();
-    } else {
-      setPuzzleGrid(newPuzzleGrid);
-    }
+    setPuzzleGrid(newPuzzleGrid);
   };
 
   const resetPuzzle = () => {
     setPuzzleGrid(JSON.parse(JSON.stringify(originalPuzzleGrid))); // Reset to the original puzzle state
     setMistakes(0); // Reset the mistakes counter
   };
+
   const checkSolution = (grid) => {
     for (let row = 0; row < 9; row++) {
       for (let col = 0; col < 9; col++) {
@@ -87,7 +90,20 @@ const TestSudokuGrid = () => {
         }
       }
     }
-    navigate("/victory"); // Navigate to the victory page if all cells are correct
+    toast.success("Congratulations! The puzzle is solved correctly."); // Display success notification
+  };
+
+  const handleSubmit = () => {
+    checkSolution(puzzleGrid);
+    if (
+      puzzleGrid.every((row, rowIndex) =>
+        row.every((cell, colIndex) => cell === solutionGrid[rowIndex][colIndex])
+      )
+    ) {
+      navigate("/victory"); // Navigate to the victory page if all cells are correct
+    } else {
+      toast.error("The puzzle is not solved correctly."); // Display error notification
+    }
   };
 
   // dev tool
@@ -110,7 +126,11 @@ const TestSudokuGrid = () => {
           <SudokuGrid puzzle={puzzleGrid} onCellChange={handleCellChange} />
         </div>
       </div>
-      <ButtonContainer onReset={resetPuzzle} />
+      <ButtonContainer
+        onReset={resetPuzzle}
+        onCheckSolution={() => checkSolution(puzzleGrid)}
+        onSubmit={handleSubmit}
+      />
       <p>
         Mistakes: {mistakes}/{maxMistakes}
       </p>

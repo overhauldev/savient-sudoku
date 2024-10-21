@@ -4,7 +4,7 @@ import SudokuGrid from "../components/SudokuGrid";
 import ButtonContainer from "../components/ButtonContainer";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import sudoku from "sudoku";
 
 const TestSudokuGrid = () => {
@@ -79,22 +79,26 @@ const TestSudokuGrid = () => {
     setPuzzleGrid(JSON.parse(JSON.stringify(originalPuzzleGrid))); // Reset to the original puzzle state
     setMistakes(0); // Reset the mistakes counter
   };
-
-  const checkSolution = () => {
+  const checkSolution = (grid) => {
     for (let row = 0; row < 9; row++) {
       for (let col = 0; col < 9; col++) {
-        if (puzzleGrid[row][col] === solutionGrid[row][col]) {
-          // TODO: Add a win condition / page
-          navigate("/victory");
-          return;
+        if (grid[row][col] !== solutionGrid[row][col]) {
+          return; // If any cell is incorrect, return early
         }
       }
     }
+    navigate("/victory"); // Navigate to the victory page if all cells are correct
   };
 
   // dev tool
   const navigateToVictory = () => {
     navigate("/victory");
+  };
+
+  // dev tool: auto-complete the grid with the solution
+  const autoCompleteGrid = () => {
+    setPuzzleGrid(solutionGrid);
+    checkSolution(solutionGrid); // Check the solution after auto-completing
   };
 
   return (
@@ -106,18 +110,27 @@ const TestSudokuGrid = () => {
           <SudokuGrid puzzle={puzzleGrid} onCellChange={handleCellChange} />
         </div>
       </div>
-      <ButtonContainer onReset={resetPuzzle} onCheckSolution={checkSolution} />
+      <ButtonContainer onReset={resetPuzzle} />
       <p>
         Mistakes: {mistakes}/{maxMistakes}
       </p>
       {process.env.NODE_ENV === "development" && (
-        <button
-          type="button"
-          className="btn btn-outline-primary btn-lg"
-          onClick={navigateToVictory}
-        >
-          Go to Victory Page (Dev Tool)
-        </button>
+        <div>
+          <button
+            type="button"
+            className="btn btn-outline-primary btn-lg"
+            onClick={navigateToVictory}
+          >
+            Go to Victory Page (Dev Tool)
+          </button>
+          <button
+            type="button"
+            className="btn btn-outline-primary btn-lg"
+            onClick={autoCompleteGrid}
+          >
+            Auto-Complete Grid (Dev Tool)
+          </button>
+        </div>
       )}
     </div>
   );

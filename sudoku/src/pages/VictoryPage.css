@@ -1,0 +1,27 @@
+.victory-page {
+    text-align: center;
+    padding: 20px;
+    background-color: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.victory-page h1 {
+    font-size: 3em;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+.victory-page p {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+.victory-page .btn {
+    padding: 10px 20px;
+    font-size: 1.2em;
+}

@@ -8,6 +8,8 @@ const TestSudokuGrid = () => {
   const [puzzleGrid, setPuzzleGrid] = useState([]);
   const [solutionGrid, setSolutionGrid] = useState([]);
   const [originalPuzzleGrid, setOriginalPuzzleGrid] = useState([]);
+  const [mistakes, setMistakes] = useState(0);
+  const maxMistakes = 5; // Set the maximum number of allowed mistakes
 
   useEffect(() => {
     // Generate the puzzle and transform it into a 2D array

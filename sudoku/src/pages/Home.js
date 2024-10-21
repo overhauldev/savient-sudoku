@@ -8,7 +8,7 @@ function Home() {
       <p>Hello agents! Complete this puzzle to earn a secret badge!</p>
       <Link to="/Sudoku">
         <button type="button" class="btn btn-outline-primary btn-lg">
-          Sudoku
+          Start
         </button>
       </Link>{" "}
     </div>

@@ -1,3 +1,10 @@
+:root {
+    --cell-size: 60px;
+    /* Default cell size */
+    --font-size: calc(var(--cell-size) * 0.5);
+    /* Font size relative to cell size */
+}
+
 .sudoku-page {
     text-align: center;
     padding: 20px;
@@ -7,7 +14,7 @@
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     gap: 2px;
-    max-width: 540;
+    max-width: calc(var(--cell-size) * 9);
     margin: 0 auto;
 }
 
@@ -16,10 +23,10 @@
 }
 
 .sudoku-cell {
-    width: 60px;
-    height: 60px;
+    width: var(--cell-size);
+    height: var(--cell-size);
     text-align: center;
-    font-size: 1.2em;
+    font-size: var(--font-size);
     border: 1px solid #ccc;
 }
 
@@ -39,54 +46,30 @@
 .sudoku-row:nth-child(3n) .sudoku-cell {
     border-bottom: 2px solid #000;
 }
+
 .sudoku-cell:focus {
     outline: none;
     background-color: #54c9ff;
-
 }
+
 /* Media Queries for Responsive Design */
 @media (max-width: 650px) {
-    .sudoku-cell {
-        font-size: 0.8em;
+    :root {
+        --cell-size: 40px;
+        /* Adjust cell size for smaller screens */
     }
 }
 
 @media (max-width: 400px) {
-    .sudoku-cell {
-        font-size: 0.6em;
+    :root {
+        --cell-size: 30px;
+        /* Adjust cell size for even smaller screens */
     }
 }
+
 .button-container {
     display: flex;
     justify-content: center;
     gap: 10px;
     margin-top: 20px;
-}
-.num-pad {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    position: fixed;
-    right: 20px;
-    top: 20px;
-    width: 200px;
-    height: auto;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.num-button {
-    width: 100%;
-    height: 60px;
-    font-size: 1.5em;
-    text-align: center;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    cursor: pointer;
-}
-
-.num-button:hover {
-    background-color: #f0f0f0;
 }

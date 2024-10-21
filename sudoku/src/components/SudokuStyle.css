@@ -44,6 +44,18 @@
     background-color: #54c9ff;
 
 }
+/* Media Queries for Responsive Design */
+@media (max-width: 650px) {
+    .sudoku-cell {
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 400px) {
+    .sudoku-cell {
+        font-size: 0.6em;
+    }
+}
 .button-container {
     display: flex;
     justify-content: center;

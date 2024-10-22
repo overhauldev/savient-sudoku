@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom"; // Ensure useNavigate is imported correctly
 import "../components/SudokuStyle.css";
 import SudokuGrid from "../components/SudokuGrid";
@@ -13,7 +13,7 @@ const TestSudokuGrid = () => {
   const [originalPuzzleGrid, setOriginalPuzzleGrid] = useState([]);
   const [mistakes, setMistakes] = useState(0);
   const navigate = useNavigate();
-  const maxMistakes = 3; // Set the maximum number of allowed mistakes
+  const maxMistakes = 5; // Set the maximum number of allowed mistakes
 
   useEffect(() => {
     // Generate the puzzle and transform it into a 2D array
@@ -43,12 +43,17 @@ const TestSudokuGrid = () => {
     setOriginalPuzzleGrid(JSON.parse(JSON.stringify(transformedPuzzle))); // Store a deep copy of the original puzzle state
   }, []);
 
+  const resetPuzzle = useCallback(() => {
+    setPuzzleGrid(JSON.parse(JSON.stringify(originalPuzzleGrid))); // Reset to the original puzzle state
+    setMistakes(0); // Reset the mistakes counter
+  }, [originalPuzzleGrid]);
+
   useEffect(() => {
     if (mistakes >= maxMistakes) {
       toast.error("Too many mistakes! The board will be reset."); // Display error notification
       resetPuzzle();
     }
-  }, [mistakes]);
+  }, [mistakes, resetPuzzle]);
 
   const handleCellChange = (row, col, value) => {
     if (!solutionGrid.length) {
@@ -75,11 +80,7 @@ const TestSudokuGrid = () => {
     }
 
     setPuzzleGrid(newPuzzleGrid);
-  };
-
-  const resetPuzzle = () => {
-    setPuzzleGrid(JSON.parse(JSON.stringify(originalPuzzleGrid))); // Reset to the original puzzle state
-    setMistakes(0); // Reset the mistakes counter
+    checkSolution(newPuzzleGrid); // Check the solution after each cell change
   };
 
   const checkSolution = (grid) => {

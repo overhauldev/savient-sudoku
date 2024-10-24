@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"; // Ensure useNavigate is importe
 import "../components/SudokuStyle.css";
 import SudokuGrid from "../components/SudokuGrid";
 import ButtonContainer from "../components/ButtonContainer";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import sudoku from "sudoku";
 
@@ -120,7 +120,6 @@ const TestSudokuGrid = () => {
 
   return (
     <div className="App-header">
-      <ToastContainer /> {/* Add ToastContainer to render notifications */}
       <h1>Savient Sudoku</h1>
       <div className="center-container">
         <div className="sudoku-container">

@@ -5,21 +5,22 @@ import SudokuGrid from "../components/SudokuGrid";
 import ButtonContainer from "../components/ButtonContainer";
 import NumPad from "../components/NumPad"; // Import the NumPad component
 import Layout from "../components/Layout"; // Import the Layout component
+import CompletionModal from "../components/CompletionModal"; // Import the CompletionModal component
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getSudoku } from "sudoku-gen"; // Import the sudoku-gen library
 
-const Sudoku = () => {
+const TestSudokuGrid = () => {
   const [puzzleGrid, setPuzzleGrid] = useState([]);
   const [solutionGrid, setSolutionGrid] = useState([]);
   const [originalPuzzleGrid, setOriginalPuzzleGrid] = useState([]);
   const [mistakes, setMistakes] = useState(0);
   const [selectedCell, setSelectedCell] = useState({ row: null, col: null });
   const [selectedNumber, setSelectedNumber] = useState(null);
+  const [showCompletionModal, setShowCompletionModal] = useState(false); // State for showing the completion modal
   const navigate = useNavigate();
-  const devTool = process.env.REACT_APP_SHOW_DEV_TOOLS;
   const maxMistakes = 5;
-  console.log("Dev Tool:", devTool);
+
   useEffect(() => {
     // Generate an easy Sudoku puzzle
     const sudoku = getSudoku("easy");
@@ -96,7 +97,7 @@ const Sudoku = () => {
         }
       }
     }
-    toast.success("Congratulations! The puzzle is solved correctly.");
+    setShowCompletionModal(true); // Show the completion modal
   };
 
   const handleSubmit = () => {
@@ -106,15 +107,25 @@ const Sudoku = () => {
         row.every((cell, colIndex) => cell === solutionGrid[rowIndex][colIndex])
       )
     ) {
-      navigate("/victory");
+      setShowCompletionModal(true); // Show the completion modal
     } else {
       toast.error("The puzzle is not solved correctly.");
     }
   };
 
+  const handleCloseModal = () => {
+    setShowCompletionModal(false);
+  };
+
+  const handleVictory = () => {
+    navigate("/victory");
+  };
+
   return (
     <Layout>
       <div className="center-container">
+        <div className="animated-background"></div>{" "}
+        {/* Add the animated background */}
         <div className="sudoku-container">
           <SudokuGrid
             puzzle={puzzleGrid}
@@ -137,29 +148,13 @@ const Sudoku = () => {
           Mistakes: {mistakes}/{maxMistakes}
         </p>
       </div>
-      {process.env.REACT_APP_SHOW_DEV_TOOLS === "true" && ( // Not compatible on smaller devices
-        <div>
-          <button
-            type="button"
-            className="btn btn-outline-primary btn-lg"
-            onClick={() => navigate("/victory")}
-          >
-            Go to Victory Page (Dev Tool)
-          </button>
-          <button
-            type="button"
-            className="btn btn-outline-primary btn-lg"
-            onClick={() => {
-              setPuzzleGrid(solutionGrid);
-              checkSolution(solutionGrid);
-            }}
-          >
-            Auto-Complete Grid (Dev Tool)
-          </button>
-        </div>
-      )}
+      <CompletionModal
+        show={showCompletionModal}
+        onClose={handleCloseModal}
+        onVictory={handleVictory}
+      />
     </Layout>
   );
 };
 
-export default Sudoku;
+export default TestSudokuGrid;

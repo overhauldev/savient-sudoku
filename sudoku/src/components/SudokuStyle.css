@@ -1,8 +1,6 @@
 :root {
     --cell-size: 60px;
-    /* Default cell size */
     --font-size: calc(var(--cell-size) * 0.5);
-    /* Font size relative to cell size */
 }
 
 .sudoku-page {
@@ -52,24 +50,63 @@
     background-color: #54c9ff;
 }
 
-/* Media Queries for Responsive Design */
-@media (max-width: 650px) {
+/* Highlighting styles */
+.sudoku-cell.selected {
+    background-color: #54c9ff;
+}
+
+.sudoku-cell.highlight-row:not(.selected) {
+    background-color: #fffed3;
+}
+
+.sudoku-cell.highlight-col:not(.selected) {
+    background-color: #fffed3;
+}
+
+.sudoku-cell.highlight-block:not(.selected) {
+    background-color: #fffed3;
+}
+
+.sudoku-cell.highlight-same-number:not(.selected) {
+    background-color: #ffeb3b;
+}
+
+/* New styles for center-container and sudoku-container */
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.sudoku-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Media queries for small devices */
+@media (max-width: 600px) {
     :root {
         --cell-size: 40px;
-        /* Adjust cell size for smaller screens */
+        --font-size: calc(var(--cell-size) * 0.5);
     }
-}
 
-@media (max-width: 400px) {
-    :root {
-        --cell-size: 30px;
-        /* Adjust cell size for even smaller screens */
+    .sudoku-grid {
+        max-width: calc(var(--cell-size) * 9);
     }
-}
 
-.button-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
+    .center-container {
+        padding: 10px;
+    }
+
+    .sudoku-container {
+        max-width: 100%;
+    }
 }

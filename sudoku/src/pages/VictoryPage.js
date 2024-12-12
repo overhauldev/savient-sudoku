@@ -61,7 +61,11 @@ function VictoryPage() {
     <div className="victory-page">
       <h1>Congratulations!</h1>
       <p>You have successfully solved the Sudoku puzzle!</p>
-      <p>(enter badge png here or secret code)</p>
+      <img
+        src={`${process.env.PUBLIC_URL}/Numeration Badge.png`}
+        alt="Badge"
+        className="badge-image"
+      />
       <Link to="/">
         <button className="btn btn-outline-primary btn-lg">Go Home</button>
       </Link>

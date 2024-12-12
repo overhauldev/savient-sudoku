@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getSudoku } from "sudoku-gen"; // Import the sudoku-gen library
 
-const TestSudokuGrid = () => {
+const Sudoku = ({ devMode }) => {
   const [puzzleGrid, setPuzzleGrid] = useState([]);
   const [solutionGrid, setSolutionGrid] = useState([]);
   const [originalPuzzleGrid, setOriginalPuzzleGrid] = useState([]);
@@ -22,7 +22,7 @@ const TestSudokuGrid = () => {
   const maxMistakes = 5;
 
   useEffect(() => {
-    // Generate an easy Sudoku puzzle
+    // Generate an easy Sudoku puzzle with more pre-filled cells
     const sudoku = getSudoku("easy");
     const puzzle = sudoku.puzzle.split(""); // Convert string to array of characters
     const solution = sudoku.solution.split(""); // Convert string to array of characters
@@ -44,9 +44,16 @@ const TestSudokuGrid = () => {
     const transformedPuzzle = transformTo2DArray(puzzle);
     const transformedSolution = transformTo2DArray(solution);
 
-    setPuzzleGrid(transformedPuzzle);
+    // Manually adjust the number of pre-filled cells to make the puzzle easier
+    const adjustedPuzzle = transformedPuzzle.map((row, rowIndex) =>
+      row.map((cell, colIndex) =>
+        Math.random() < 0.65 ? transformedSolution[rowIndex][colIndex] : ""
+      )
+    );
+
+    setPuzzleGrid(adjustedPuzzle);
     setSolutionGrid(transformedSolution);
-    setOriginalPuzzleGrid(JSON.parse(JSON.stringify(transformedPuzzle)));
+    setOriginalPuzzleGrid(JSON.parse(JSON.stringify(adjustedPuzzle)));
   }, []);
 
   const resetPuzzle = useCallback(() => {
@@ -157,4 +164,4 @@ const TestSudokuGrid = () => {
   );
 };
 
-export default TestSudokuGrid;
+export default Sudoku;

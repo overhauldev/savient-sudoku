@@ -6,11 +6,6 @@ Welcome to Savient Sudoku, a web-based Sudoku puzzle game built with React. This
 
 - [Features](#features)
 - [Installation](#installation)
-- [Available Scripts](#available-scripts)
-- [Project Structure](#project-structure)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 

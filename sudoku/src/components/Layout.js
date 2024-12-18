@@ -8,9 +8,6 @@ const Layout = ({ children }) => {
         <h1>Savient Sudoku</h1>
       </header>
       <main className="layout-content">{children}</main>
-      <footer className="layout-footer">
-        <p>Good luck Agents!</p>
-      </footer>
     </div>
   );
 };

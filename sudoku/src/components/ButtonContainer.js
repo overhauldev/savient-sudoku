@@ -1,26 +1,45 @@
+// filepath: /c:/Projects/sudoku-puzzle/sudoku/src/components/ButtonContainer.js
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../App.css";
 import InfoModal from "./InfoModal";
+import ConfirmModal from "./ConfirmModal";
 
 const ButtonContainer = ({ onCheckSolution }) => {
   const [showInfoModal, setShowInfoModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const navigate = useNavigate();
 
   const handleInfoClick = () => {
     setShowInfoModal(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseInfoModal = () => {
     setShowInfoModal(false);
+  };
+
+  const handleHomeClick = () => {
+    setShowConfirmModal(true);
+  };
+
+  const handleCloseConfirmModal = () => {
+    setShowConfirmModal(false);
+  };
+
+  const handleConfirmNavigation = () => {
+    setShowConfirmModal(false);
+    navigate("/");
   };
 
   return (
     <div className="Button-container">
-      <Link to="/">
-        <button type="button" className="btn btn-outline-primary btn-lg">
-          Home
-        </button>
-      </Link>
+      <button
+        type="button"
+        className="btn btn-outline-primary btn-lg"
+        onClick={handleHomeClick}
+      >
+        Home
+      </button>
       <button
         type="button"
         className="btn btn-outline-primary btn-lg"
@@ -28,7 +47,12 @@ const ButtonContainer = ({ onCheckSolution }) => {
       >
         Info
       </button>
-      <InfoModal show={showInfoModal} onClose={handleCloseModal} />
+      <InfoModal show={showInfoModal} onClose={handleCloseInfoModal} />
+      <ConfirmModal
+        show={showConfirmModal}
+        onClose={handleCloseConfirmModal}
+        onConfirm={handleConfirmNavigation}
+      />
     </div>
   );
 };

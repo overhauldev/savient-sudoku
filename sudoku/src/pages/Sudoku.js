@@ -185,7 +185,7 @@ const Sudoku = ({ devMode }) => {
             type="password"
             value={password}
             onChange={handlePasswordChange}
-            placeholder="Enter password to enable slider"
+            placeholder="Enter password for slider"
           />
           {passwordEnabled && (
             <Slider

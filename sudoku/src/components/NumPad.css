@@ -25,11 +25,20 @@
     background-color: rgba(0, 0, 0, 0.1);
     /* Add slight background on hover */
 }
-
 @media (max-width: 600px) {
-    .numpad-button {
-        width: 30px;
-        height: 30px;
-        font-size: 1.2em;
-    }
+  .numpad-container {
+    max-width: 100%;
+  }
+
+  .numpad-button {
+    width: 22%;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .numpad-button {
+    width: 30%;
+    font-size: 1rem;
+  }
 }

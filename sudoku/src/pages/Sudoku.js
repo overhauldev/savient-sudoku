@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import "../components/SudokuStyle.css";
 import SudokuGrid from "../components/SudokuGrid";
 import ButtonContainer from "../components/ButtonContainer";
-import NumPad from "../components/NumPad"; // Import the NumPad component
-import Layout from "../components/Layout"; // Import the Layout component
-import CompletionModal from "../components/CompletionModal"; // Import the CompletionModal component
+import NumPad from "../components/NumPad";
+import Layout from "../components/Layout";
+import CompletionModal from "../components/CompletionModal";
+import LoseModal from "../components/LoseModal";
+import Slider from "@mui/material/Slider";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getSudoku } from "sudoku-gen"; // Import the sudoku-gen library
+import { getSudoku } from "sudoku-gen";
 
 const Sudoku = ({ devMode }) => {
   const [puzzleGrid, setPuzzleGrid] = useState([]);
@@ -17,15 +19,18 @@ const Sudoku = ({ devMode }) => {
   const [mistakes, setMistakes] = useState(0);
   const [selectedCell, setSelectedCell] = useState({ row: null, col: null });
   const [selectedNumber, setSelectedNumber] = useState(null);
-  const [showCompletionModal, setShowCompletionModal] = useState(false); // State for showing the completion modal
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [showLoseModal, setShowLoseModal] = useState(false); // State for lose modal
+  const [difficulty, setDifficulty] = useState(0.65);
+  const [passwordEnabled, setPasswordEnabled] = useState(false); // Password boolean
+  const [password, setPassword] = useState(""); // Password state
   const navigate = useNavigate();
   const maxMistakes = 5;
 
   useEffect(() => {
-    // Generate an easy Sudoku puzzle with more pre-filled cells
     const sudoku = getSudoku("easy");
-    const puzzle = sudoku.puzzle.split(""); // Convert string to array of characters
-    const solution = sudoku.solution.split(""); // Convert string to array of characters
+    const puzzle = sudoku.puzzle.split("");
+    const solution = sudoku.solution.split("");
     console.log("Puzzle:", puzzle);
     console.log("Solution:", solution);
 
@@ -44,17 +49,30 @@ const Sudoku = ({ devMode }) => {
     const transformedPuzzle = transformTo2DArray(puzzle);
     const transformedSolution = transformTo2DArray(solution);
 
-    // Manually adjust the number of pre-filled cells to make the puzzle easier
-    const adjustedPuzzle = transformedPuzzle.map((row, rowIndex) =>
+    setSolutionGrid(transformedSolution);
+    setOriginalPuzzleGrid(transformedPuzzle);
+    adjustPuzzleDifficulty(transformedPuzzle, transformedSolution, difficulty);
+  }, [difficulty]);
+
+  const adjustPuzzleDifficulty = (puzzle, solution, difficulty) => {
+    const adjustedPuzzle = puzzle.map((row, rowIndex) =>
       row.map((cell, colIndex) =>
-        Math.random() < 0.65 ? transformedSolution[rowIndex][colIndex] : ""
+        Math.random() < difficulty ? solution[rowIndex][colIndex] : ""
       )
     );
-
     setPuzzleGrid(adjustedPuzzle);
-    setSolutionGrid(transformedSolution);
-    setOriginalPuzzleGrid(JSON.parse(JSON.stringify(adjustedPuzzle)));
-  }, []);
+  };
+
+  const handleDifficultyChange = (event, newValue) => {
+    setDifficulty(newValue);
+    adjustPuzzleDifficulty(originalPuzzleGrid, solutionGrid, newValue);
+  };
+
+  useEffect(() => {
+    if (originalPuzzleGrid.length && solutionGrid.length) {
+      adjustPuzzleDifficulty(originalPuzzleGrid, solutionGrid, difficulty);
+    }
+  }, [difficulty, originalPuzzleGrid, solutionGrid]);
 
   const resetPuzzle = useCallback(() => {
     setPuzzleGrid(JSON.parse(JSON.stringify(originalPuzzleGrid)));
@@ -64,6 +82,7 @@ const Sudoku = ({ devMode }) => {
   useEffect(() => {
     if (mistakes >= maxMistakes) {
       toast.error("Too many mistakes! The board will be reset.");
+      setShowLoseModal(true); // Show lose modal
       resetPuzzle();
     }
   }, [mistakes, resetPuzzle]);
@@ -104,7 +123,7 @@ const Sudoku = ({ devMode }) => {
         }
       }
     }
-    setShowCompletionModal(true); // Show the completion modal
+    setShowCompletionModal(true);
   };
 
   const handleSubmit = () => {
@@ -114,9 +133,9 @@ const Sudoku = ({ devMode }) => {
         row.every((cell, colIndex) => cell === solutionGrid[rowIndex][colIndex])
       )
     ) {
-      setShowCompletionModal(true); // Show the completion modal
+      toast.success("Congratulations! You solved the puzzle!");
     } else {
-      toast.error("The puzzle is not solved correctly.");
+      toast.error("There are still some mistakes in the puzzle.");
     }
   };
 
@@ -124,15 +143,27 @@ const Sudoku = ({ devMode }) => {
     setShowCompletionModal(false);
   };
 
+  const handleCloseLoseModal = () => {
+    setShowLoseModal(false);
+  };
+
   const handleVictory = () => {
     navigate("/victory");
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+    if (event.target.value === "password") {
+      setPasswordEnabled(true);
+    } else {
+      setPasswordEnabled(false);
+    }
   };
 
   return (
     <Layout>
       <div className="center-container">
-        <div className="animated-background"></div>{" "}
-        {/* Add the animated background */}
+        <div className="animated-background"></div>
         <div className="sudoku-container">
           <SudokuGrid
             puzzle={puzzleGrid}
@@ -144,22 +175,40 @@ const Sudoku = ({ devMode }) => {
             selectedCell={selectedCell}
             selectedNumber={selectedNumber}
           />
-          <NumPad onNumberClick={handleNumberClick} />{" "}
+          <NumPad onNumberClick={handleNumberClick} />
           <ButtonContainer
             onReset={resetPuzzle}
             onCheckSolution={() => checkSolution(puzzleGrid)}
             onSubmit={handleSubmit}
           />
+          <input
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+            placeholder="Enter password to enable slider"
+          />
+          {passwordEnabled && (
+            <Slider
+              value={difficulty}
+              min={0.5}
+              max={1}
+              step={0.01}
+              onChange={handleDifficultyChange}
+              valueLabelDisplay="auto"
+              aria-labelledby="difficulty-slider"
+            />
+          )}
         </div>
-        <p>
+        <div className="mistakes-container">
           Mistakes: {mistakes}/{maxMistakes}
-        </p>
+        </div>
       </div>
       <CompletionModal
         show={showCompletionModal}
         onClose={handleCloseModal}
         onVictory={handleVictory}
       />
+      <LoseModal show={showLoseModal} onClose={handleCloseLoseModal} />
     </Layout>
   );
 };

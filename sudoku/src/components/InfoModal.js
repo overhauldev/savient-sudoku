@@ -25,8 +25,14 @@ const InfoModal = ({ show, onClose }) => {
           <li>
             Each 3x3 subgrid must contain the digits 1 to 9 without repetition.
           </li>
+          <li>
+            You have 5 mistakes allowed. If you make more than 5 mistakes, the
+            board will be reset. Be careful!
+          </li>
         </ul>
-        <p>Good luck Agents!</p>
+        <p>
+          Good luck Agents! If you are stuck, do not be afraid to ask for help
+        </p>
         <button className="btn btn-outline-primary btn-lg" onClick={onClose}>
           Close
         </button>

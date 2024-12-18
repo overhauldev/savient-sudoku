@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../App.css";
 import InfoModal from "./InfoModal";
 
-const ButtonContainer = ({ onReset, onCheckSolution }) => {
+const ButtonContainer = ({ onCheckSolution }) => {
   const [showInfoModal, setShowInfoModal] = useState(false);
 
   const handleInfoClick = () => {
@@ -16,14 +16,6 @@ const ButtonContainer = ({ onReset, onCheckSolution }) => {
 
   return (
     <div className="Button-container">
-      <button
-        type="button"
-        className="btn btn-outline-primary btn-lg"
-        onClick={onReset}
-      >
-        Reset
-      </button>
-
       <Link to="/">
         <button type="button" className="btn btn-outline-primary btn-lg">
           Home

@@ -16,6 +16,7 @@ const Sudoku = ({ devMode }) => {
   const [puzzleGrid, setPuzzleGrid] = useState([]);
   const [solutionGrid, setSolutionGrid] = useState([]);
   const [originalPuzzleGrid, setOriginalPuzzleGrid] = useState([]);
+  const [adjustedPuzzleGrid, setAdjustedPuzzleGrid] = useState([]); // Track adjusted puzzle grid
   const [mistakes, setMistakes] = useState(0);
   const [selectedCell, setSelectedCell] = useState({ row: null, col: null });
   const [selectedNumber, setSelectedNumber] = useState(null);
@@ -24,6 +25,7 @@ const Sudoku = ({ devMode }) => {
   const [difficulty, setDifficulty] = useState(0.65);
   const [passwordEnabled, setPasswordEnabled] = useState(false); // Password boolean
   const [password, setPassword] = useState(""); // Password state
+  const [preFilledCells, setPreFilledCells] = useState([]); // Track pre-filled cells
   const navigate = useNavigate();
   const maxMistakes = 5;
 
@@ -31,8 +33,6 @@ const Sudoku = ({ devMode }) => {
     const sudoku = getSudoku("easy");
     const puzzle = sudoku.puzzle.split("");
     const solution = sudoku.solution.split("");
-    console.log("Puzzle:", puzzle);
-    console.log("Solution:", solution);
 
     const transformTo2DArray = (array) => {
       let grid = [];
@@ -55,41 +55,30 @@ const Sudoku = ({ devMode }) => {
   }, [difficulty]);
 
   const adjustPuzzleDifficulty = (puzzle, solution, difficulty) => {
+    const newPreFilledCells = [];
     const adjustedPuzzle = puzzle.map((row, rowIndex) =>
-      row.map((cell, colIndex) =>
-        Math.random() < difficulty ? solution[rowIndex][colIndex] : ""
-      )
+      row.map((cell, colIndex) => {
+        const isPreFilled = Math.random() < difficulty;
+        if (isPreFilled) {
+          newPreFilledCells.push({ row: rowIndex, col: colIndex });
+        }
+        return isPreFilled ? solution[rowIndex][colIndex] : "";
+      })
     );
     setPuzzleGrid(adjustedPuzzle);
+    setAdjustedPuzzleGrid(adjustedPuzzle); // Store adjusted puzzle grid
+    setPreFilledCells(newPreFilledCells);
   };
-
-  const handleDifficultyChange = (event, newValue) => {
-    setDifficulty(newValue);
-    adjustPuzzleDifficulty(originalPuzzleGrid, solutionGrid, newValue);
-  };
-
-  useEffect(() => {
-    if (originalPuzzleGrid.length && solutionGrid.length) {
-      adjustPuzzleDifficulty(originalPuzzleGrid, solutionGrid, difficulty);
-    }
-  }, [difficulty, originalPuzzleGrid, solutionGrid]);
-
-  const resetPuzzle = useCallback(() => {
-    setPuzzleGrid(JSON.parse(JSON.stringify(originalPuzzleGrid)));
-    setMistakes(0);
-  }, [originalPuzzleGrid]);
-
-  useEffect(() => {
-    if (mistakes >= maxMistakes) {
-      toast.error("Too many mistakes! The board will be reset.");
-      setShowLoseModal(true); // Show lose modal
-      resetPuzzle();
-    }
-  }, [mistakes, resetPuzzle]);
 
   const handleCellChange = (row, col, value) => {
     if (!solutionGrid.length) {
       console.log("Solution grid is not yet initialized.");
+      return;
+    }
+
+    // Prevent changes to pre-filled cells
+    if (preFilledCells.some((cell) => cell.row === row && cell.col === col)) {
+      toast.error("Cannot change a pre-filled cell!");
       return;
     }
 
@@ -99,6 +88,8 @@ const Sudoku = ({ devMode }) => {
     if (intValue === solutionGrid[row][col]) {
       newPuzzleGrid[row][col] = intValue;
       toast.success("Correct value entered!");
+      // Add the cell to preFilledCells to prevent future edits
+      setPreFilledCells([...preFilledCells, { row, col }]);
     } else {
       toast.error("Incorrect value entered!");
       newPuzzleGrid[row][col] = "";
@@ -159,6 +150,25 @@ const Sudoku = ({ devMode }) => {
       setPasswordEnabled(false);
     }
   };
+
+  const handleDifficultyChange = (event, newValue) => {
+    setDifficulty(newValue);
+    adjustPuzzleDifficulty(originalPuzzleGrid, solutionGrid, newValue);
+  };
+
+  const resetPuzzle = useCallback(() => {
+    setPuzzleGrid(JSON.parse(JSON.stringify(adjustedPuzzleGrid))); // Use adjusted puzzle grid
+    setMistakes(0);
+  }, [adjustedPuzzleGrid]);
+
+  useEffect(() => {
+    if (mistakes >= maxMistakes) {
+      toast.error("Too many mistakes! The board will be reset.");
+      setShowLoseModal(true); // Show lose modal
+      resetPuzzle();
+    }
+  }, [mistakes, resetPuzzle]);
+
   return (
     <Layout>
       <div className="center-container">

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import { toast } from "react-toastify";
 import "./VictoryPage.css";
+import "../App.css";
 
 function VictoryPage() {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -10,9 +11,13 @@ function VictoryPage() {
   const [selectedTeamID, setSelectedTeamID] = useState(null);
   const [selectedTeamName, setSelectedTeamName] = useState("Select a team");
   const badgeId = "1"; // Badge ID
+  const navigate = useNavigate(); // Initialize navigate
+  const [submitted, setSubmitted] = useState(false);
+
   document.addEventListener("contextmenu", function (e) {
     e.preventDefault();
   });
+
   // Fetch team data from backend
   useEffect(() => {
     const fetchTeams = async () => {
@@ -41,9 +46,11 @@ function VictoryPage() {
           }
         );
 
-        if (response.ok) {
+        if (response.ok && !submitted) {
           // Handle successful submission
           toast.success("Badge ID submitted successfully!");
+          setSubmitted(true);
+          navigate("/"); // Redirect to home page
         } else {
           // Handle error
           toast.error("Error submitting Badge ID.");
@@ -59,6 +66,11 @@ function VictoryPage() {
 
   return (
     <div className="victory-page">
+      <ul className="background">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <li key={index}></li>
+        ))}
+      </ul>
       <h1>Congratulations!</h1>
       <p>You have successfully solved the Sudoku puzzle!</p>
       <img

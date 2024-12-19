@@ -5,12 +5,16 @@
 }
 
 .layout-header {
-    background-color: #282c34;
-    color: white;
-    padding: 20px;
-    text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 
+.title-image {
+  max-width: 40%;
+  height: auto;
+}
 .layout-content {
     flex: 1;
     display: flex;

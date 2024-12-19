@@ -159,11 +159,14 @@ const Sudoku = ({ devMode }) => {
       setPasswordEnabled(false);
     }
   };
-
   return (
     <Layout>
       <div className="center-container">
-        <div className="animated-background"></div>
+        <ul className="background">
+          {Array.from({ length: 10 }).map((_, index) => (
+            <li key={index}></li>
+          ))}
+        </ul>
         <div className="sudoku-container">
           <SudokuGrid
             puzzle={puzzleGrid}

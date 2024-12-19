@@ -5,7 +5,11 @@ const Layout = ({ children }) => {
   return (
     <div className="layout">
       <header className="layout-header">
-        <h1>Savient Sudoku</h1>
+        <img
+          src="/savient-logo-white.png"
+          alt="Savient Sudoku"
+          className="title-image"
+        />
       </header>
       <main className="layout-content">{children}</main>
     </div>

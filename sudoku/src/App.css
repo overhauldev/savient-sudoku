@@ -1,6 +1,11 @@
 .App {
   text-align: center;
 }
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
 
 .App-logo {
   height: 40vmin;
@@ -54,7 +59,17 @@ body {
   margin-top: 20px;
   gap: 10px;
 }
+.button-row {
+  display: flex;
+  gap: 10px; /* Adjust the gap between buttons as needed */
+  justify-content: center; /* Center the buttons horizontally */
+  margin-top: 20px; /* Adjust the margin as needed */
+}
 
+.fixed-size-button {
+  width: 100px; /* Set a fixed width for the buttons */
+  height: 60px; /* Set a fixed height for the buttons */
+}
 .App-logo {
   height: 100px;
   margin-bottom: 20px;

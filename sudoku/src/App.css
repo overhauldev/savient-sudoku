@@ -1,29 +1,66 @@
-.App {
-  text-align: center;
+:root {
+    --cell-size: 60px;
+    --font-size: calc(var(--cell-size) * 0.5);
 }
+
+.layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+.layout-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2vh 2vw; /* Use viewport units for padding */
+    width: calc(var(--cell-size) * 9); /* Match the width of the sudoku grid */
+    margin: 0 auto; /* Center the container */
+}
+
+.title-image {
+    max-width: 40vw; /* Use viewport width for max-width */
+    height: auto;
+}
+
+
+.layout-footer {
+    background-color: #282c34;
+    color: white;
+    text-align: center;
+    padding: 1vh 1vw; /* Use viewport units for padding */
+    width: calc(var(--cell-size) * 9); /* Match the width of the sudoku grid */
+    margin: 0 auto; /* Center the container */
+}
+
+.App {
+    text-align: center;
+}
+
 html, body {
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
+    height: 100%;
+    margin: 0;
+    overflow: show;
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 40vmin;
+    pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
 }
 
 /* Global styles */
 body {
-  font-family: 'Roboto', sans-serif;
-  background-color: #f0f0f0;
-  margin: 0;
-  padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
 }
 
 .App-header {
@@ -35,62 +72,316 @@ body {
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
-    position: relative; /* Ensure content is positioned relative to the background */
-    z-index: 1; /* Ensure content stays above the background */
+    position: relative;
+    z-index: 1;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .Button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  gap: 10px;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
 }
+
 .button-row {
-  display: flex;
-  gap: 10px; /* Adjust the gap between buttons as needed */
-  justify-content: center; /* Center the buttons horizontally */
-  margin-top: 20px; /* Adjust the margin as needed */
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.top-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    width: calc(var(--cell-size) * 9); /* Match the width of the sudoku grid */
+    margin: 0 auto; /* Center the container */
+}
+
+.numpad-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    width: calc(var(--cell-size) * 9); /* Match the width of the sudoku grid */
+    margin: 0 auto; /* Center the container */
+}
+
+.numpad-button {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    font-size: 2em;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+.numpad-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.mistakes-container {
+    flex: 1;
+}
+
+input[type="password"] {
+    flex: 1;
+    margin-left: 10px;
 }
 
 .fixed-size-button {
-  width: 100px; /* Set a fixed width for the buttons */
-  height: 60px; /* Set a fixed height for the buttons */
+    width: 100px;
+    height: 60px;
 }
+
 .App-logo {
-  height: 100px;
-  margin-bottom: 20px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+/* Sudoku styles */
+.sudoku-page {
+    text-align: center;
+    padding: 20px;
+}
+
+.sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 2px;
+    max-width: calc(var(--cell-size) * 9);
+    margin: 0 auto;
+}
+
+.sudoku-row {
+    display: contents;
+}
+
+.sudoku-cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    text-align: center;
+    font-size: var(--font-size);
+    border: 1px solid #ccc;
+}
+
+/* Highlight 3x3 subgrids */
+.sudoku-cell:nth-child(3n+1) {
+    border-left: 2px solid #000;
+}
+
+.sudoku-cell:nth-child(3n) {
+    border-right: 2px solid #000;
+}
+
+.sudoku-row:nth-child(3n+1) .sudoku-cell {
+    border-top: 2px solid #000;
+}
+
+.sudoku-row:nth-child(3n) .sudoku-cell {
+    border-bottom: 2px solid #000;
+}
+
+.sudoku-cell:focus {
+    outline: none;
+    background-color: #54c9ff;
+}
+
+/* Highlighting styles */
+.sudoku-cell.selected {
+    background-color: #54c9ff;
+}
+
+.sudoku-cell.highlight-row:not(.selected) {
+    background-color: #fffed3;
+}
+
+.sudoku-cell.highlight-col:not(.selected) {
+    background-color: #fffed3;
+}
+
+.sudoku-cell.highlight-block:not(.selected) {
+    background-color: #fffed3;
+}
+
+.sudoku-cell.highlight-same-number:not(.selected) {
+    background-color: #ffeb3b;
+}
+
+/* New styles for center-container and sudoku-container */
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.sudoku-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px; /* Adjust this value as needed */
+    margin: 0 auto;
+}
+
+.mistakes-container {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.mistakes-container:hover {
+    transform: scale(1.1);
+    background-color: darkred;
 }
 
 /* Media queries for small devices */
 @media (max-width: 600px) {
-  .App-header {
-    font-size: calc(8px + 2vmin);
-    padding: 10px;
-  }
+    :root {
+        --cell-size: 40px;
+        --font-size: calc(var(--cell-size) * 0.5);
+    }
 
-  .Button-container {
-    flex-direction: column;
-    gap: 5px;
-  }
+    .sudoku-grid {
+        max-width: calc(var(--cell-size) * 9);
+    }
 
-  .App-logo {
-    height: 80px;
-  }
+    .center-container {
+        padding: 10px;
+    }
+
+    .sudoku-container {
+        max-width: 100%;
+    }
+
+    .App-header {
+        font-size: calc(8px + 2vmin);
+        padding: 10px;
+    }
+
+    .Button-container {
+        gap: 5px;
+    }
+
+    .top-container {
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 5px;
+        width: calc(var(--cell-size) * 9); /* Match the width of the sudoku grid */
+    }
+
+    .numpad-container {
+        flex-wrap: wrap;
+    }
+
+    .numpad-button {
+        width: calc(33.33% - 10px); /* Adjust width to fit within the container */
+        height: calc(33.33% - 10px); /* Adjust height to fit within the container */
+        font-size: 1.5em; /* Adjust font size for smaller screens */
+    }
+
+    .mistakes-container {
+        margin-bottom: 0;
+        font-size: small;
+    }
+
+    input[type="password"] {
+        margin-left: 5px;
+    }
+
+    .fixed-size-button {
+        width: 80px;
+        height: 40px;
+    }
 }
+
+/* Media queries for extra small devices */
+@media (max-width: 400px) {
+    :root {
+        --cell-size: 30px;
+        --font-size: calc(var(--cell-size) * 0.5);
+    }
+
+    .sudoku-grid {
+        max-width: calc(var(--cell-size) * 9);
+    }
+
+    .center-container {
+        padding: 5px;
+    }
+
+    .sudoku-container {
+        max-width: 100%;
+    }
+
+    .numpad-container {
+        flex-wrap: wrap;
+    }
+
+    .numpad-button {
+        width: calc(33.33% - 10px); /* Adjust width to fit within the container */
+        height: calc(33.33% - 10px); /* Adjust height to fit within the container */
+        font-size: 1.2em; /* Adjust font size for smaller screens */
+    }
+}
+
+/* Media queries for 300 pixel wide devices */
+@media (max-width: 300px) {
+    :root {
+        --cell-size: 25px;
+        --font-size: calc(var(--cell-size) * 0.5);
+    }
+
+    .sudoku-grid {
+        max-width: calc(var(--cell-size) * 9);
+    }
+
+    .center-container {
+        padding: 5px;
+    }
+
+    .sudoku-container {
+        max-width: 100%;
+    }
+
+    .numpad-container {
+        flex-wrap: row;
+    }
+
+    .numpad-button {
+        width: calc(33.33% - 10px); /* Adjust width to fit within the container */
+        height: calc(33.33% - 10px); /* Adjust height to fit within the container */
+        font-size: 1em; /* Adjust font size for smaller screens */
+    }
+}
+
 @keyframes animate {
     0% {
         transform: translateY(0) rotate(0deg);
@@ -114,7 +405,7 @@ body {
     padding: 0;
     background: #282c34;
     overflow: hidden;
-    z-index: -1; /* Ensure background stays behind content */
+    z-index: -1;
 }
 
 .background li {
@@ -134,6 +425,7 @@ body {
     bottom: -207px;
     animation-delay: 1s;
 }
+
 .background li:nth-child(1) {
     left: 42%;
     width: 259px;
@@ -141,6 +433,7 @@ body {
     bottom: -259px;
     animation-delay: 4s;
 }
+
 .background li:nth-child(2) {
     left: 16%;
     width: 249px;
@@ -148,6 +441,7 @@ body {
     bottom: -249px;
     animation-delay: 10s;
 }
+
 .background li:nth-child(3) {
     left: 27%;
     width: 184px;
@@ -155,6 +449,7 @@ body {
     bottom: -184px;
     animation-delay: 4s;
 }
+
 .background li:nth-child(4) {
     left: 82%;
     width: 203px;
@@ -162,6 +457,7 @@ body {
     bottom: -203px;
     animation-delay: 1s;
 }
+
 .background li:nth-child(5) {
     left: 67%;
     width: 282px;
@@ -169,6 +465,7 @@ body {
     bottom: -282px;
     animation-delay: 21s;
 }
+
 .background li:nth-child(6) {
     left: 65%;
     width: 251px;
@@ -176,6 +473,7 @@ body {
     bottom: -251px;
     animation-delay: 29s;
 }
+
 .background li:nth-child(7) {
     left: 9%;
     width: 140px;
@@ -183,6 +481,7 @@ body {
     bottom: -140px;
     animation-delay: 8s;
 }
+
 .background li:nth-child(8) {
     left: 69%;
     width: 280px;
@@ -190,6 +489,7 @@ body {
     bottom: -280px;
     animation-delay: 17s;
 }
+
 .background li:nth-child(9) {
     left: 39%;
     width: 253px;

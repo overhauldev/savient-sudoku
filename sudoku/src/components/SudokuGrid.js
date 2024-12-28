@@ -27,14 +27,7 @@ const SudokuGrid = ({
               key={colIndex}
               value={cell}
               onChange={(e) => onCellChange(rowIndex, colIndex, e.target.value)}
-              onClick={() => {
-                onCellSelect(rowIndex, colIndex, cell);
-                if (cell !== "") {
-                  onCellSelect(rowIndex, colIndex, cell);
-                } else {
-                  onCellSelect(rowIndex, colIndex, null);
-                }
-              }}
+              onClick={() => onCellSelect(rowIndex, colIndex, cell)}
               selected={
                 selectedCell.row === rowIndex && selectedCell.col === colIndex
               }
@@ -46,7 +39,8 @@ const SudokuGrid = ({
               highlightSameNumber={
                 selectedNumber !== null && selectedNumber === cell
               }
-              readOnly={cell !== ""}
+              readOnly
+              inputMode="none"
             />
           ))}
         </div>

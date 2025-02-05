@@ -1,7 +1,8 @@
 {
-  "name": "frontend",
+  "name": "sudoku",
   "version": "0.1.0",
   "private": true,
+  "main": "electron/main.js",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -12,6 +13,7 @@
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "cross-env": "^7.0.3",
+    "nth-check": "2.1.1", 
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
     "react-dom": "^18.3.1",
@@ -23,11 +25,17 @@
     "sudoku-gen": "^1.0.2",
     "web-vitals": "^2.1.4"
   },
+  "overrides": {
+    "nth-check": "2.1.1"  
+  },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "start": "react-scripts start --host 0.0.0.0",
+    "electron": "electron .",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron-pack": "npm run build && electron-builder build"
   },
   "eslintConfig": {
     "extends": [
@@ -46,5 +54,35 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "devDependencies": {
+    "electron": "^34.0.2",
+    "electron-builder": "^25.1.8",
+    "electron-is-dev": "^3.0.1",
+    "npm-force-resolutions": "^0.0.10",
+    "wait-on": "^6.0.1"
+  },
+  "build": {
+    "appId": "com.yourname.sudoku",
+    "files": [
+      "build/**/*",
+      "electron/main.js",
+      "electron/preload.js"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    }
+  },
+  "keywords": [],
+  "author": "baldwin",
+  "license": "ISC",
+  "resolutions": {
+    "nth-check": "2.1.1",  
+    "postcss": "^8.4.31"
   }
 }

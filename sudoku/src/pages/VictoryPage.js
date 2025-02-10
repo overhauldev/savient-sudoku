@@ -6,7 +6,7 @@ import "./VictoryPage.css";
 import "../App.css";
 
 function VictoryPage() {
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = import.meta.env.VITE_APP_API_URL;
   const [teams, setTeams] = useState([]);
   const [selectedTeamID, setSelectedTeamID] = useState(null);
   const [selectedTeamName, setSelectedTeamName] = useState("Select a team");
@@ -74,7 +74,7 @@ function VictoryPage() {
       <h1>Congratulations!</h1>
       <p>You have successfully solved the Sudoku puzzle!</p>
       <img
-        src={`${process.env.PUBLIC_URL}/Numeration Badge.png`}
+        src={`${import.meta.env.PUBLIC_URL}/Numeration Badge.png`}
         alt="Badge"
         className="badge-image"
       />

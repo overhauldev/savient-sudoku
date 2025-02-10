@@ -4,8 +4,8 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
 import ErrorPage from "./pages/ErrorPage";
-import Sudoku from "./pages/Sudoku";
-import VictoryPage from "./pages/VictoryPage";
+import Sudoku from "./pages/Sudoku.js";
+import VictoryPage from "./pages/VictoryPage.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

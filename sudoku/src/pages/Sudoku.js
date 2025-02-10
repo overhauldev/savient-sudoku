@@ -1,3 +1,4 @@
+// filepath: /c:/Projects/sudoku-puzzle/sudoku/src/pages/Sudoku.js
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import SudokuGrid from "../components/SudokuGrid";
@@ -176,45 +177,47 @@ const Sudoku = ({ devMode }) => {
             <li key={index}></li>
           ))}
         </ul>
-        <div className="top-container">
-          <div className="mistakes-container">
-            Mistakes: {mistakes}/{maxMistakes}
-          </div>
-          <input
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-            placeholder="Enter password for slider"
-          />
-        </div>
-        <div className="sudoku-container">
-          {passwordEnabled && (
-            <Slider
-              value={difficulty}
-              min={0.5}
-              max={1}
-              step={0.01}
-              onChange={handleDifficultyChange}
-              valueLabelDisplay="auto"
-              aria-labelledby="difficulty-slider"
+        <div className="parent-container">
+          <div className="top-container">
+            <div className="mistakes-container">
+              Mistakes: {mistakes}/{maxMistakes}
+            </div>
+            <input
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+              placeholder="Enter password for slider"
             />
-          )}
-          <SudokuGrid
-            puzzle={puzzleGrid}
-            onCellChange={handleCellChange}
-            onCellSelect={(row, col, value) => {
-              setSelectedCell({ row, col });
-              setSelectedNumber(value !== "" ? value : null);
-            }}
-            selectedCell={selectedCell}
-            selectedNumber={selectedNumber}
-          />
-          <NumPad onNumberClick={handleNumberClick} />
-          <ButtonContainer
-            onReset={resetPuzzle}
-            onCheckSolution={() => checkSolution(puzzleGrid)}
-            onSubmit={handleSubmit}
-          />
+          </div>
+          <div className="sudoku-container">
+            {passwordEnabled && (
+              <Slider
+                value={difficulty}
+                min={0.5}
+                max={1}
+                step={0.01}
+                onChange={handleDifficultyChange}
+                valueLabelDisplay="auto"
+                aria-labelledby="difficulty-slider"
+              />
+            )}
+            <SudokuGrid
+              puzzle={puzzleGrid}
+              onCellChange={handleCellChange}
+              onCellSelect={(row, col, value) => {
+                setSelectedCell({ row, col });
+                setSelectedNumber(value !== "" ? value : null);
+              }}
+              selectedCell={selectedCell}
+              selectedNumber={selectedNumber}
+            />
+            <NumPad onNumberClick={handleNumberClick} />
+            <ButtonContainer
+              onReset={resetPuzzle}
+              onCheckSolution={() => checkSolution(puzzleGrid)}
+              onSubmit={handleSubmit}
+            />
+          </div>
         </div>
       </div>
       <CompletionModal

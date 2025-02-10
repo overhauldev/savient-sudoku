@@ -33,6 +33,8 @@ const InfoModal = ({ show, onClose }) => {
         <p>
           Good luck Agents! If you are stuck, do not be afraid to ask for help
         </p>
+        <h3>Note:</h3>
+        <p>Use the numpad below the grid to enter numbers.</p>
         <button className="btn btn-outline-primary btn-lg" onClick={onClose}>
           Close
         </button>

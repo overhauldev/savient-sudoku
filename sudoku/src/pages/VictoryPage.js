@@ -73,11 +73,7 @@ function VictoryPage() {
       </ul>
       <h1>Congratulations!</h1>
       <p>You have successfully solved the Sudoku puzzle!</p>
-      <img
-        src={`${import.meta.env.PUBLIC_URL}/Numeration Badge.png`}
-        alt="Badge"
-        className="badge-image"
-      />
+      <img src={"/Numeration Badge.png"} alt="Badge" className="badge-image" />
       <Link to="/">
         <button className="btn btn-outline-primary btn-lg">Go Home</button>
       </Link>

@@ -229,22 +229,39 @@ input[type="password"] {
 
 /* New styles for center-container and sudoku-container */
 .center-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+}
+
+.parent-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px; /* Adjust this value as needed */
+  margin: 0 auto;
+}
+
+.top-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  width: calc(var(--cell-size) * 9); /* Match the width of the sudoku grid */
+  margin: 0 auto; /* Center the container */
 }
 
 .sudoku-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 600px; /* Adjust this value as needed */
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px; /* Adjust this value as needed */
+  margin: 0 auto;
 }
 
 .mistakes-container {
